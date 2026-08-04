@@ -8,8 +8,15 @@ export default async function Home() {
 
   try {
     const h = await headers();
-    const result = await whop.verifyUserToken(h);
-    userId = result.userId;
+    console.log("Incoming headers:", Object.fromEntries(h.entries()));
+    try {
+      const result = await whop.verifyUserToken(h);
+      userId = result.userId;
+      console.log("Verified userId:", userId);
+    } catch (err) {
+      console.error("verifyUserToken failed:", err);
+      throw err;
+    }
   } catch {
     error =
       "Unable to verify your identity. Make sure you're accessing this app from within Whop.";
